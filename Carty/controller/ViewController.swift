@@ -21,20 +21,14 @@ class ViewController: UIViewController {
     @IBOutlet weak var discount: UIButton!
     @IBOutlet weak var imagesCollection: UICollectionView!
     @IBOutlet weak var ColHeight: NSLayoutConstraint!
-    var deviceHeight: CGFloat?
+    var constantHeight: CGFloat?
 
     var product: jsonProduct?
     let reachability = try! Reachability()
     var flag: Bool?
     override func viewDidLoad() {
         super.viewDidLoad()
-        deviceHeight = {
-            if UIDevice.current.orientation.isLandscape{
-                return view.bounds.width
-            }else{
-                return view.bounds.height
-            }
-        }()
+        constantHeight = max(self.view.bounds.height, self.view.bounds.width) * 0.4
         setUP()
         reachability.whenReachable = { _ in
             self.whenReached()
@@ -106,7 +100,7 @@ class ViewController: UIViewController {
         stock.setTitle(String(product!.stock), for: .normal)
         brand.setTitle(product!.brand, for: .normal)
         discount.setTitle(String(product!.discountPercentage)+"%", for: .normal)
-        ColHeight.constant = deviceHeight! * 0.4
+        ColHeight.constant = constantHeight!
         view.layoutIfNeeded()
     }
 }
@@ -124,7 +118,7 @@ extension ViewController: UICollectionViewDelegate,UICollectionViewDataSource,UI
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: deviceHeight! * 0.3, height: deviceHeight! * 0.3)
+        return CGSize(width: constantHeight!, height: constantHeight!)
     }
     
 }

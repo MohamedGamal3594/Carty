@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="proCell" rowHeight="101" id="kzd-wf-O6V" customClass="ProductTableCell" customModule="Carty" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="proCell" rowHeight="101" id="kzd-wf-O6V" customClass="ProductsTableCell" customModule="Carty" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="50" width="393" height="101"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="kzd-wf-O6V" id="Wfq-ew-MOz">
@@ -63,8 +63,8 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="productImage" destination="w6E-2P-Wun" id="owe-I5-iaD"/>
-                                    <outlet property="productLabel" destination="RWg-mY-Cn7" id="sfl-8s-AWc"/>
+                                    <outlet property="productImage" destination="w6E-2P-Wun" id="CCx-7F-F0c"/>
+                                    <outlet property="productLabel" destination="RWg-mY-Cn7" id="vot-us-1aD"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

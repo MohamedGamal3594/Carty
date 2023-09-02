@@ -78,7 +78,7 @@ extension ProductsTableView{
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "proCell") as! ProductTableCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "proCell") as! ProductsTableCell
         
         let product = products[indexPath.row]
         

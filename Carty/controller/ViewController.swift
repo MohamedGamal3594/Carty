@@ -21,11 +21,20 @@ class ViewController: UIViewController {
     @IBOutlet weak var discount: UIButton!
     @IBOutlet weak var imagesCollection: UICollectionView!
     @IBOutlet weak var ColHeight: NSLayoutConstraint!
-    
+    var deviceHeight: CGFloat?
+
     var product: jsonProduct?
     let reachability = try! Reachability()
+    var flag: Bool?
     override func viewDidLoad() {
         super.viewDidLoad()
+        deviceHeight = {
+            if UIDevice.current.orientation.isLandscape{
+                return view.bounds.width
+            }else{
+                return view.bounds.height
+            }
+        }()
         setUP()
         reachability.whenReachable = { _ in
             self.whenReached()
@@ -36,7 +45,7 @@ class ViewController: UIViewController {
         }
         
         do{
-            try reachability.startNotifier()
+            try self.reachability.startNotifier()
         }catch{
             print("unable to start")
         }
@@ -52,26 +61,38 @@ class ViewController: UIViewController {
         productImage.layer.borderWidth = 2
         productImage.layer.borderColor = UIColor.systemGray4.cgColor
         let favProduct = CoreManager.CM.fetch(id: product!.id)
+        var favButton: UIBarButtonItem
         if favProduct.count > 0{
-            let favButton = UIBarButtonItem(image: UIImage(systemName: "heart.fill"), style: .done, target: self, action: #selector(favClicked))
-            favButton.tintColor = UIColor(named: "AppPink")
-            navigationItem.rightBarButtonItem = favButton
+            favButton = UIBarButtonItem(image: UIImage(systemName: "heart.fill"), style: .done, target: self, action: #selector(favClicked))
+            flag = false
         }else{
-            let favButton = UIBarButtonItem(image: UIImage(systemName: "heart"), style: .done, target: self, action: #selector(favClicked))
-            favButton.tintColor = UIColor(named: "AppPink")
-            navigationItem.rightBarButtonItem = favButton
+            favButton = UIBarButtonItem(image: UIImage(systemName: "heart"), style: .done, target: self, action: #selector(favClicked))
+            flag = true
         }
+        favButton.tintColor = UIColor(named: "AppPink")
+        navigationItem.rightBarButtonItem = favButton
+    }
+    func goBack(){
+        let alert = UIAlertController(title: "error", message: "No Internet!,please go back", preferredStyle: .alert)
+        let action = UIAlertAction(title: "go back", style: .destructive){
+            _ in
+            self.navigationController?.popViewController(animated: true)
+        }
+        alert.addAction(action)
+        self.present(alert, animated: true)
     }
     
     @objc func favClicked(_ sender: UIBarButtonItem){
-        if sender.image == UIImage(systemName: "heart"){
+        if flag!{
             let data = productImage.image?.jpegData(compressionQuality: 1.0)
             
             CoreManager.CM.addProduct(id: product!.id, title: product!.title, thumbnail: data!)
             sender.image = UIImage(systemName: "heart.fill")
+            flag = !flag!
         }else{
             CoreManager.CM.removeProduct(id: product!.id)
             sender.image = UIImage(systemName: "heart")
+            flag = !flag!
         }
     }
     
@@ -85,11 +106,12 @@ class ViewController: UIViewController {
         stock.setTitle(String(product!.stock), for: .normal)
         brand.setTitle(product!.brand, for: .normal)
         discount.setTitle(String(product!.discountPercentage)+"%", for: .normal)
-        ColHeight.constant = view.frame.height * 0.4
+        ColHeight.constant = deviceHeight! * 0.4
         view.layoutIfNeeded()
     }
 }
 
+// collection delegate and data source methods
 extension ViewController: UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return product!.images.count
@@ -102,7 +124,7 @@ extension ViewController: UICollectionViewDelegate,UICollectionViewDataSource,UI
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: self.view.frame.width * 0.7, height: self.view.frame.width * 0.7)
+        return CGSize(width: deviceHeight! * 0.3, height: deviceHeight! * 0.3)
     }
     
 }

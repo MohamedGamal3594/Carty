@@ -46,23 +46,4 @@ extension UITableViewController {
     func restore() {
         self.tableView.backgroundView = nil
     }
-    
-    func showOKAlert(message: String){
-        let alert = UIAlertController(title: "error", message: message, preferredStyle: .alert)
-        let action = UIAlertAction(title: "OK", style: .default)
-        alert.addAction(action)
-        self.present(alert, animated: true)
-    }
-}
-
-extension UIViewController{
-    func goBack(){
-        let alert = UIAlertController(title: "error", message: "No Internet!,please go back", preferredStyle: .alert)
-        let action = UIAlertAction(title: "go back", style: .destructive){
-            _ in
-            self.navigationController?.popViewController(animated: true)
-        }
-        alert.addAction(action)
-        self.present(alert, animated: true)
-    }
 }

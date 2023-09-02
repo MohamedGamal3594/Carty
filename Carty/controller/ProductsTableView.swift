@@ -57,10 +57,16 @@ class ProductsTableView: UITableViewController {
         }
     }
     
+    func showOKAlert(message: String){
+        let alert = UIAlertController(title: "error", message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK", style: .default)
+        alert.addAction(action)
+        self.present(alert, animated: true)
+    }
+    
 }
 
-
-// TableView Delegate and Datasource
+// table delegate and data source methods
 extension ProductsTableView{
     
     override func numberOfSections(in tableView: UITableView) -> Int {

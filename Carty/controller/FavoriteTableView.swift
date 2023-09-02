@@ -19,10 +19,25 @@ class FavoriteTableView: UITableViewController {
         tableView.reloadData()
         
     }
+    
+    func showConfirm(row: Int){
+        let alert = UIAlertController(title: "confirm", message: "Are you sure you want to delete it?", preferredStyle: .alert)
+        let yesAction = UIAlertAction(title: "Yes", style: .default){ _ in
+            CoreManager.CM.removeProduct(id: self.products[row].id)
+            self.products = CoreManager.CM.fetchProducts()
+            self.tableView.reloadData()
+        }
+        
+        let noAction = UIAlertAction(title: "No", style: .destructive)
+        alert.addAction(yesAction)
+        alert.addAction(noAction)
+        self.present(alert, animated: true)
+    }
 
 
 }
 
+// table delegate and data source methods
 extension FavoriteTableView{
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -49,17 +64,7 @@ extension FavoriteTableView{
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete{
-            let alert = UIAlertController(title: "confirm", message: "Are you sure you want to delete it?", preferredStyle: .alert)
-            let yesAction = UIAlertAction(title: "Yes", style: .default){ _ in
-                CoreManager.CM.removeProduct(id: self.products[indexPath.row].id)
-                self.products = CoreManager.CM.fetchProducts()
-                self.tableView.reloadData()
-            }
-            
-            let noAction = UIAlertAction(title: "No", style: .destructive)
-            alert.addAction(yesAction)
-            alert.addAction(noAction)
-            self.present(alert, animated: true)
+            showConfirm(row: indexPath.row)
         }
     }
     
